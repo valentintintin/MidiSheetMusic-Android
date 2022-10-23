@@ -1,5 +1,6 @@
 package com.midisheetmusic;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import java.io.IOException;
@@ -15,19 +16,28 @@ public class WLed {
     private final InetAddress inetAddress;
     private final int port;
     private final int startPos;
-    private final byte[] ledAffectation;
-    
-    public WLed(String host, int port, int startPos, byte[] ledAffectation) throws UnknownHostException {
+    private final Number[] ledAffectation;
+    private int[] noteColors;
+    private final int colorBlack = Color.BLACK;
+
+    public WLed(String host, int port, int startPos, Number[] ledAffectation, int[] noteColors) throws UnknownHostException {
         this.inetAddress = Inet4Address.getByName(host);
         this.port = port;
         this.startPos = startPos;
         this.ledAffectation = ledAffectation;
+        this.noteColors = noteColors;
     }
 
     public void showNote(int note, boolean pressed) {
-        byte[] colorLight = new byte[] { 50, 25, 100 };
-        byte[] colorNight = new byte[] { 0, 0, 0 };
-        byte[] color = pressed ? colorLight : colorNight;
+        Number noteLed = ledAffectation[note - 21]; // 21 first note in Midi
+        
+        if (noteLed == null) {
+            return;
+        }
+
+        int noteOctave = ((note - 21) - startPos) % 12;
+
+        int color = pressed ? noteColors[noteOctave] : colorBlack;
         
         /*
         Byte 0 : 1 for WARLS
@@ -35,7 +45,7 @@ public class WLed {
         Byte 2 : Led N
         Byte 3-5 : Color R G B
          */
-        sendToWLed(new byte[] { 1, 5, (byte) note, color[0], color[1], color[2]});
+        sendToWLed(new byte[] { 1, 5, noteLed.byteValue(), (byte) Color.red(color), (byte) Color.green(color), (byte) Color.blue(color)});
     }
     
     private void sendToWLed(final byte[] data) {

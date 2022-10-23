@@ -69,6 +69,12 @@ public class MidiOptions implements Serializable {
 
     public int[] noteColors;
     public int midiShift;
+    
+    public boolean useWLed;
+    public String wLedHost;
+    public int wLedPort;
+    public int wLedStartLed;
+    public byte[] wLedLedAffectation;
 
     public MidiOptions() {
     }
@@ -108,7 +114,7 @@ public class MidiOptions implements Serializable {
         shade1Color = Color.rgb(210, 205, 220);
         shade2Color = Color.rgb(150, 200, 220);
 
-        useColors = false;
+        useColors = true;
         noteColors = new int[12];
         noteColors[0] = Color.rgb(180, 0, 0);
         noteColors[1] = Color.rgb(230, 0, 0);
@@ -129,6 +135,10 @@ public class MidiOptions implements Serializable {
         playMeasuresInLoop = false;
         playMeasuresInLoopStart = 0;
         playMeasuresInLoopEnd = lastMeasure;
+        
+        useWLed = false;
+        wLedPort = 21324;
+        wLedStartLed = 0;
     }
 
     /* Convert this MidiOptions object into a JSON string. */
@@ -185,6 +195,11 @@ public class MidiOptions implements Serializable {
             json.put("playMeasuresInLoop", playMeasuresInLoop);
             json.put("playMeasuresInLoopStart", playMeasuresInLoopStart);
             json.put("playMeasuresInLoopEnd", playMeasuresInLoopEnd);
+            json.put("useWLed", useWLed);
+            json.put("wLedHost", wLedHost);
+            json.put("wLedPort", wLedPort);
+            json.put("wLedStartLed", wLedStartLed);
+            json.put("wLedLedAffectation", wLedLedAffectation);
             
             return json.toString();
         }
@@ -273,6 +288,11 @@ public class MidiOptions implements Serializable {
             options.playMeasuresInLoop = json.getBoolean("playMeasuresInLoop");
             options.playMeasuresInLoopStart = json.getInt("playMeasuresInLoopStart");
             options.playMeasuresInLoopEnd = json.getInt("playMeasuresInLoopEnd");
+            options.useWLed = json.getBoolean("useWLed");
+            options.wLedHost = json.getString("wLedHost");
+            options.wLedPort = json.getInt("wLedPort");
+            options.wLedStartLed = json.getInt("wLedStartLed");
+//            options.wLedLedAffectation = json.getInt("wLedLedAffectation");
         }
         catch (Exception e) {
             return null;
@@ -323,6 +343,11 @@ public class MidiOptions implements Serializable {
         playMeasuresInLoop = saved.playMeasuresInLoop;
         playMeasuresInLoopStart = saved.playMeasuresInLoopStart;
         playMeasuresInLoopEnd = saved.playMeasuresInLoopEnd;
+        useWLed = saved.useWLed;
+        wLedHost = saved.wLedHost;
+        wLedPort = saved.wLedPort;
+        wLedStartLed = saved.wLedStartLed;
+        wLedLedAffectation = saved.wLedLedAffectation;
     }
  
 
@@ -388,6 +413,12 @@ public class MidiOptions implements Serializable {
         
         options.shifttime = shifttime;
         options.largeNoteSize = largeNoteSize;
+        
+        options.useWLed = useWLed;
+        options.wLedHost = wLedHost;
+        options.wLedPort = wLedPort;
+        options.wLedStartLed = wLedStartLed;
+        options.wLedLedAffectation = wLedLedAffectation;
         return options; 
     }
 }

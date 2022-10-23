@@ -76,11 +76,11 @@ public class SheetMusicActivity extends MidiHandlingActivity {
     private long midiCRC;        /* CRC of the midi bytes */
     private Drawer drawer;
 
-     /** Create this SheetMusicActivity.
-      * The Intent should have two parameters:
-      * - data: The uri of the midi file to open.
-      * - MidiTitleID: The title of the song (String)
-      */
+    /** Create this SheetMusicActivity.
+     * The Intent should have two parameters:
+     * - data: The uri of the midi file to open.
+     * - MidiTitleID: The title of the song (String)
+     */
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -241,18 +241,99 @@ public class SheetMusicActivity extends MidiHandlingActivity {
         player.SetPiano(piano);
         layout.requestLayout();
 
+//        if (options.useWLed) {
         try {
-            piano.SetWLed(new WLed("192.168.1.69", 21324, 4, new byte[1]));
+            piano.SetWLed(new WLed("192.168.1.69", options.wLedPort, 3, new Number[] {
+                    null,
+                    null,
+                    null,
+                    null, // Do = 3
+                    null,
+                    null,
+                    0, // Ré 1/2 = 6
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    5,
+                    6,
+                    7, // Do
+                    8,
+                    9,
+                    10,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    15,
+                    16,
+                    17, // Do
+                    18,
+                    19,
+                    20,
+                    20,
+                    21,
+                    22,
+                    23,
+                    24,
+                    25,
+                    25,
+                    26,
+                    27, // Do
+                    28,
+                    29,
+                    30,
+                    30,
+                    31,
+                    32,
+                    33,
+                    34,
+                    35,
+                    35,
+                    36,
+                    37, // Do
+                    38,
+                    39,
+                    40,
+                    40,
+                    41,
+                    42,
+                    43,
+                    44,
+                    45,
+                    45,
+                    46,
+                    47, // Do
+                    48,
+                    49,
+                    50,
+                    50,
+                    51,
+                    52,
+                    53,
+                    54,
+                    55,
+                    55,
+                    56,
+                    57, // Do = 75
+                    58,
+                    59
+                }, options.noteColors));
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        
+//        }
+
         player.setSheetUpdateRequestListener(() -> createSheetMusic(options));
         createSheetMusic(options);
     }
 
     /** Create the SheetMusic view with the given options */
-    private void 
+    private void
     createSheetMusic(MidiOptions options) {
         if (sheet != null) {
             layout.removeView(sheet);
@@ -363,20 +444,20 @@ public class SheetMusicActivity extends MidiHandlingActivity {
 
     /* Show the "Save As Images" dialog */
     private void showSaveImagesDialog() {
-         LayoutInflater inflator = LayoutInflater.from(this);
-         final View dialogView= inflator.inflate(R.layout.save_images_dialog, layout, false);
-         final EditText filenameView = dialogView.findViewById(R.id.save_images_filename);
-         filenameView.setText(midifile.getFileName().replace("_", " ") );
-         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-         builder.setTitle(R.string.save_images_str);
-         builder.setView(dialogView);
-         builder.setPositiveButton("OK",
-                 (builder1, whichButton) -> saveAsImages(filenameView.getText().toString()));
-         builder.setNegativeButton("Cancel",
-                 (builder12, whichButton) -> {
-         });
-         AlertDialog dialog = builder.create();
-         dialog.show();
+        LayoutInflater inflator = LayoutInflater.from(this);
+        final View dialogView= inflator.inflate(R.layout.save_images_dialog, layout, false);
+        final EditText filenameView = dialogView.findViewById(R.id.save_images_filename);
+        filenameView.setText(midifile.getFileName().replace("_", " ") );
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.save_images_str);
+        builder.setView(dialogView);
+        builder.setPositiveButton("OK",
+                (builder1, whichButton) -> saveAsImages(filenameView.getText().toString()));
+        builder.setNegativeButton("Cancel",
+                (builder12, whichButton) -> {
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 
@@ -469,13 +550,13 @@ public class SheetMusicActivity extends MidiHandlingActivity {
         if (requestCode != settingsRequestCode) {
             return;
         }
-        options = (MidiOptions) 
-            intent.getSerializableExtra(SettingsActivity.settingsID);
+        options = (MidiOptions)
+                intent.getSerializableExtra(SettingsActivity.settingsID);
 
         // Check whether the default instruments have changed.
         for (int i = 0; i < options.instruments.length; i++) {
-            if (options.instruments[i] !=  
-                midifile.getTracks().get(i).getInstrument()) {
+            if (options.instruments[i] !=
+                    midifile.getTracks().get(i).getInstrument()) {
                 options.useDefaultInstruments = false;
             }
         }

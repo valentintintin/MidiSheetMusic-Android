@@ -53,5 +53,9 @@
     <string name="use_note_colors">Use Note Colors</string>
     <string name="use_accidental_colors">Use Accidental Colors</string>
     <string name="home">Home</string>
+    <string name="use_wled">Use WLed</string>
+    <string name="wled_host">Host</string>
+    <string name="wled_port">Port</string>
+    <string name="wled_start_led">Start Led</string>
 
 </resources>

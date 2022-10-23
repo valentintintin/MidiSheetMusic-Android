@@ -17,6 +17,7 @@ import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.view.MenuItem;
+import android.widget.NumberPicker;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -133,6 +134,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         private ColorPreference shade1Color;          /** Right-hand color */
         private ColorPreference shade2Color;          /** Left-hand color */
+        
+        private SwitchPreferenceCompat useWled;    /** Use WLed */
+        private EditTextPreference wLedHost;
+        private EditTextPreference wLedPort;
+        private EditTextPreference wLedStartLed;
 
         private Context context;
 
@@ -170,6 +176,7 @@ public class SettingsActivity extends AppCompatActivity {
             createCombineIntervalPrefs(root);
             createDelayStartIntervalPrefs(root);
             createColorPrefs(root);
+            createWLedPrefs(root);
             setPreferenceScreen(root);
         }
 
@@ -435,9 +442,9 @@ public class SettingsActivity extends AppCompatActivity {
 
             colorAccidentals.setOnPreferenceChangeListener((preference, isChecked) -> {
                 if ((boolean)isChecked == true)
-                    useColors.setChecked(false);
+                    colorAccidentals.setChecked(false);
 
-                boolean isuseColorChecked = useColors.isChecked();
+                boolean isuseColorChecked = colorAccidentals.isChecked();
                 for (ColorPreference noteColorPref : noteColors) {
                     noteColorPref.setVisible((boolean)isuseColorChecked);
                 }
@@ -469,6 +476,31 @@ public class SettingsActivity extends AppCompatActivity {
                 noteColors[i].setVisible(options.useColors);
                 root.addPreference(noteColors[i]);
             }
+        }
+        
+        private void createWLedPrefs(PreferenceScreen root) {
+            PreferenceCategory localPreferenceCategory = new PreferenceCategory(context);
+            localPreferenceCategory.setTitle("WLed");
+            root.addPreference(localPreferenceCategory);
+
+            useWled = new SwitchPreferenceCompat(context);
+            useWled.setTitle(R.string.use_wled);
+            useWled.setChecked(options.useWLed);
+            useWled.setOnPreferenceChangeListener((preference, isChecked) -> {
+                if ((boolean)isChecked == true)
+                    useWled.setChecked(false);
+                return true;
+            });
+            root.addPreference(useWled);
+            
+//            wLedHost = new EditTextPreference(context);
+//            wLedHost.setTitle(R.string.wled_host);
+//            wLedHost.setText(options.wLedHost);
+//            wLedHost.setOnPreferenceChangeListener((preference, host) -> {
+//                wLedHost.setText((String) host);
+//                return true;
+//            });
+//            root.addPreference(wLedHost);
         }
 
         /** Create the "Restore Default Settings" preference */
@@ -524,6 +556,9 @@ public class SettingsActivity extends AppCompatActivity {
             options.useColors = useColors.isChecked();
             options.colorAccidentals = colorAccidentals.isChecked();
             options.useFullHeight = useFullHeight.isChecked();
+            options.useWLed = useWled.isChecked();
+//            options.wLedHost = wLedHost.getText();
+//            options.wLedPort = wLedPort.getText();
         }
 
         @Override
