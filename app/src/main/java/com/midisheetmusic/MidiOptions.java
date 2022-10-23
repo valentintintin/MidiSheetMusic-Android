@@ -73,7 +73,6 @@ public class MidiOptions implements Serializable {
     public boolean useWLed;
     public String wLedHost;
     public int wLedPort;
-    public int wLedStartLed;
     public byte[] wLedLedAffectation;
 
     public MidiOptions() {
@@ -138,7 +137,6 @@ public class MidiOptions implements Serializable {
         
         useWLed = false;
         wLedPort = 21324;
-        wLedStartLed = 0;
     }
 
     /* Convert this MidiOptions object into a JSON string. */
@@ -198,7 +196,6 @@ public class MidiOptions implements Serializable {
             json.put("useWLed", useWLed);
             json.put("wLedHost", wLedHost);
             json.put("wLedPort", wLedPort);
-            json.put("wLedStartLed", wLedStartLed);
             json.put("wLedLedAffectation", wLedLedAffectation);
             
             return json.toString();
@@ -291,7 +288,6 @@ public class MidiOptions implements Serializable {
             options.useWLed = json.getBoolean("useWLed");
             options.wLedHost = json.getString("wLedHost");
             options.wLedPort = json.getInt("wLedPort");
-            options.wLedStartLed = json.getInt("wLedStartLed");
 //            options.wLedLedAffectation = json.getInt("wLedLedAffectation");
         }
         catch (Exception e) {
@@ -346,7 +342,6 @@ public class MidiOptions implements Serializable {
         useWLed = saved.useWLed;
         wLedHost = saved.wLedHost;
         wLedPort = saved.wLedPort;
-        wLedStartLed = saved.wLedStartLed;
         wLedLedAffectation = saved.wLedLedAffectation;
     }
  
@@ -417,7 +412,6 @@ public class MidiOptions implements Serializable {
         options.useWLed = useWLed;
         options.wLedHost = wLedHost;
         options.wLedPort = wLedPort;
-        options.wLedStartLed = wLedStartLed;
         options.wLedLedAffectation = wLedLedAffectation;
         return options; 
     }

@@ -15,15 +15,13 @@ public class WLed {
 
     private final InetAddress inetAddress;
     private final int port;
-    private final int startPos;
     private final Number[] ledAffectation;
     private int[] noteColors;
     private final int colorBlack = Color.BLACK;
 
-    public WLed(String host, int port, int startPos, Number[] ledAffectation, int[] noteColors) throws UnknownHostException {
+    public WLed(String host, int port, Number[] ledAffectation, int[] noteColors) throws UnknownHostException {
         this.inetAddress = Inet4Address.getByName(host);
         this.port = port;
-        this.startPos = startPos;
         this.ledAffectation = ledAffectation;
         this.noteColors = noteColors;
     }
@@ -35,17 +33,24 @@ public class WLed {
             return;
         }
 
-        int noteOctave = ((note - 21) - startPos) % 12;
+        int noteOctave = (note - 21) % noteColors.length;
 
         int color = pressed ? noteColors[noteOctave] : colorBlack;
         
         /*
         Byte 0 : 1 for WARLS
-        Byte 1 : 5s before timeout WLed
+        Byte 1 : seconds before timeout WLed
         Byte 2 : Led N
         Byte 3-5 : Color R G B
          */
-        sendToWLed(new byte[] { 1, 5, noteLed.byteValue(), (byte) Color.red(color), (byte) Color.green(color), (byte) Color.blue(color)});
+        sendToWLed(new byte[] { 
+                1, 
+                2, 
+                noteLed.byteValue(),
+                (byte) (Color.red(color) / 20),
+                (byte) (Color.green(color) / 20),
+                (byte) (Color.blue(color) / 20)
+        });
     }
     
     private void sendToWLed(final byte[] data) {

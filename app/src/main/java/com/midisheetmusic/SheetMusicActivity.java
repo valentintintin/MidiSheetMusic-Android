@@ -243,7 +243,7 @@ public class SheetMusicActivity extends MidiHandlingActivity {
 
 //        if (options.useWLed) {
         try {
-            piano.SetWLed(new WLed("192.168.1.69", options.wLedPort, 3, new Number[] {
+            piano.SetWLed(new WLed("192.168.1.69", options.wLedPort, new Number[] {
                     null,
                     null,
                     null,
