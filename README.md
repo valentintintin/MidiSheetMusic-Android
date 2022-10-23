@@ -3,6 +3,10 @@
 # MidiSheetMusic-android
 An app for visualizing MIDI files with extra features to make learning new pieces easier.
 
+# Fork
+
+Add WLed support to illuminate the keyboard note while playing. WIP
+
 <div style="text-align: center">
 
 <img src="images/screenshot_sheet.png" width="500" hspace="20">

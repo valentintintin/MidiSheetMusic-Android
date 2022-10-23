@@ -163,7 +163,7 @@ public class MidiPlayer extends LinearLayout {
 
     int prevWrongMidi = 0;
 
-    void OnMidiNote(int note, boolean pressed) {
+    void OnMidiNote(int note, boolean pressed) {        
         if (!pressed) return;
         MusicSymbol nextNote = this.sheet.getCurrentNote((int) currentPulseTime);
         int midiNote = ((ChordSymbol) nextNote).getNotedata()[0].number;
@@ -739,7 +739,7 @@ public class MidiPlayer extends LinearLayout {
                 return;
             }
             sheet.ShadeNotes((int)currentPulseTime, (int)prevPulseTime, SheetMusic.GradualScroll);
-            piano.ShadeNotes((int)currentPulseTime, (int)prevPulseTime);
+            piano.ShadeNotes((int)currentPulseTime, (int)prevPulseTime);            
             timer.postDelayed(TimerCallback, 100);
         }
         else if (playstate == initPause) {

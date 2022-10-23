@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.zip.CRC32;
 
 /**
@@ -240,6 +241,12 @@ public class SheetMusicActivity extends MidiHandlingActivity {
         player.SetPiano(piano);
         layout.requestLayout();
 
+        try {
+            piano.SetWLed(new WLed("192.168.1.69", 21324, 4, new byte[1]));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        
         player.setSheetUpdateRequestListener(() -> createSheetMusic(options));
         createSheetMusic(options);
     }

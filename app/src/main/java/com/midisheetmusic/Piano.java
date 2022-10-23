@@ -59,6 +59,7 @@ public class Piano extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap  bufferBitmap;         /** The bitmap for double-buffering */
     private Canvas  bufferCanvas;         /** The canvas for double-buffering */
     private MidiPlayer player;            /** Used to pause the player */
+    private WLed wLed;                    /** Used to illuminate while playing */
 
     /** Create a new Piano. */
     public Piano(Context context) {
@@ -154,6 +155,10 @@ public class Piano extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     protected void onSizeChanged(int newwidth, int newheight, int oldwidth, int oldheight) {
         super.onSizeChanged(newwidth, newheight, oldwidth, oldheight);
+    }
+    
+    public void SetWLed(WLed w) {
+        wLed = w;
     }
 
     /** Set the MidiFile to use.
@@ -668,13 +673,22 @@ public class Piano extends SurfaceView implements SurfaceHolder.Callback {
             if ((start <= currentPulseTime) && (currentPulseTime < end)) {
                 if (useTwoColors) {
                     if (notes.get(i).getChannel() == 1) {
+                        if (wLed != null) {
+                            wLed.showNote(notenumber, true);
+                        }                        
                         ShadeOneNote(bufferCanvas, notenumber, shade2);
                     }
                     else {
+                        if (wLed != null) {
+                            wLed.showNote(notenumber, true);
+                        }
                         ShadeOneNote(bufferCanvas, notenumber, shade1);
                     }
                 }
                 else {
+                    if (wLed != null) {
+                        wLed.showNote(notenumber, true);
+                    }
                     ShadeOneNote(bufferCanvas, notenumber, shade1);
                 }
             }
@@ -683,9 +697,15 @@ public class Piano extends SurfaceView implements SurfaceHolder.Callback {
             else if ((start <= prevPulseTime) && (prevPulseTime < end)) {
                 int num = notenumber % 12;
                 if (num == 1 || num == 3 || num == 6 || num == 8 || num == 10) {
+                    if (wLed != null) {
+                        wLed.showNote(notenumber, false);
+                    }
                     ShadeOneNote(bufferCanvas, notenumber, gray1);
                 }
                 else {
+                    if (wLed != null) {
+                        wLed.showNote(notenumber, false);
+                    }
                     ShadeOneNote(bufferCanvas, notenumber, Color.WHITE);
                 }
             }
